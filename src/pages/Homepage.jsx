@@ -1,121 +1,140 @@
+import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import "../index.css";
 
 export default function Homepage() {
-  const [dark, setDark] = useState(true);
-
-  const toggleTheme = () => {
-    setDark(!dark);
-    document.body.classList.toggle("light");
-  };
-
   return (
     <div>
 
-      {/* NAVBAR */}
-      <nav className="nav">
-        <h2 className="logo">DEVEX</h2>
+      <Navbar />
 
-        <div className="nav-links">
-          <button onClick={toggleTheme} className="theme-btn">
-            {dark ? "Dark" : "Light"}
-          </button>
+      {/* ================= HERO ================= */}
+      <section className="hero section">
 
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-          <Link to="/login">Login</Link>
-        </div>
-      </nav>
+        <div className="hero-left">
 
-      {/* HERO */}
-      <section className="hero premium">
-
-        <div className="hero-content">
-
-          <span className="badge">🚀 Modern Digital Solutions</span>
+          <span className="badge">
+            DEVEX SOLUTIONS
+          </span>
 
           <h1>
-            We Build Scalable <span>Web Solutions</span>
+            Build <span>Modern</span><br />
+            Digital Products
           </h1>
 
           <p>
-            Devex helps businesses grow with high-performance websites,
-            APIs, and clean UI/UX systems built for modern users.
+            We build scalable, high-performance web applications
+            with clean UI and modern technologies that help your
+            business grow faster.
           </p>
 
           <div className="hero-buttons">
-            <Link to="/register">
-              <button className="btn-primary">Start Project</button>
+
+            <Link to="/services">
+              <button className="btn-primary">
+                Get Started
+              </button>
             </Link>
 
-            <a href="#services">
-              <button className="btn-outline">Explore Services</button>
-            </a>
+            <Link to="/about">
+              <button className="btn-outline">
+                Learn More
+              </button>
+            </Link>
+
+          </div>
+
+          {/* STATS */}
+          <div className="hero-stats">
+
+            <div className="stat">
+              <h3>50+</h3>
+              <p>Projects Delivered</p>
+            </div>
+
+            <div className="stat">
+              <h3>10+</h3>
+              <p>Happy Clients</p>
+            </div>
+
+            <div className="stat">
+              <h3>100%</h3>
+              <p>Success Rate</p>
+            </div>
+
           </div>
 
         </div>
 
+        {/* RIGHT */}
+        <div className="hero-right">
+          <div className="hero-box"></div>
+        </div>
+
       </section>
 
-      {/* SERVICES */}
-      <section id="services" className="section">
-        <h2>Our Services</h2>
+      {/* ================= FEATURES ================= */}
+      <section className="section">
+
+        <div className="section-header">
+          <h2>Why Choose Devex</h2>
+          <p>
+            We deliver high-quality solutions using modern technologies,
+            clean design, and scalable architecture.
+          </p>
+        </div>
 
         <div className="cards">
+
           <div className="card">
-            <h3>Web Development</h3>
-            <p>Fast, scalable and modern websites.</p>
+            <h3>Fast Development</h3>
+            <p>Quick delivery using optimized workflows.</p>
           </div>
 
           <div className="card">
-            <h3>Frontend</h3>
-            <p>Beautiful UI with React & animations.</p>
+            <h3>Clean UI/UX</h3>
+            <p>Simple and intuitive user-friendly interfaces.</p>
           </div>
 
           <div className="card">
-            <h3>Backend</h3>
-            <p>Secure APIs and database systems.</p>
+            <h3>Scalable Systems</h3>
+            <p>Applications built to grow with your business.</p>
           </div>
 
           <div className="card">
-            <h3>API Development</h3>
-            <p>REST APIs & integrations.</p>
+            <h3>Secure Apps</h3>
+            <p>Strong security practices for safe applications.</p>
           </div>
 
           <div className="card">
-            <h3>UI/UX Design</h3>
-            <p>Clean and user-friendly design.</p>
+            <h3>Modern Tech</h3>
+            <p>Using latest frameworks and technologies.</p>
           </div>
 
           <div className="card">
-            <h3>Bug Fixing</h3>
-            <p>Fix errors and optimize performance.</p>
+            <h3>Reliable Support</h3>
+            <p>Continuous support and improvements.</p>
           </div>
+
         </div>
+
       </section>
 
-      {/* ABOUT */}
-      <section id="about" className="section">
-        <h2>About Devex</h2>
-        <p className="about-text">
-          Devex is a modern development company specializing in web apps,
-          APIs, and UI/UX systems. We focus on performance, scalability,
-          and clean design to deliver real business results.
+      {/* ================= CTA ================= */}
+      <section className="cta-section">
+
+        <h2>Let’s Build Something Amazing</h2>
+
+        <p>
+          Start your project today and take your business to the next level.
         </p>
-      </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="section">
-        <h2>Contact</h2>
-        <p>Email: devex@gmail.com</p>
-        <p>Phone: +91 9876543210</p>
-      </section>
+        <Link to="/contact">
+          <button className="btn-primary">
+            Contact Now
+          </button>
+        </Link>
 
-      <footer className="footer">
-        <p>© 2026 Devex</p>
-      </footer>
+      </section>
 
     </div>
   );

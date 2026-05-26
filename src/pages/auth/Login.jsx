@@ -1,114 +1,126 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/authApi";
-import { useAuth } from "../../context/AuthContext";
-import "../../index.css";
+import { useState } from "react";
 
 export default function Login() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  /* ================= STATE ================= */
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+
+  /* ================= NAVIGATION ================= */
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
+  /* ================= FORM HANDLER ================= */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 👉 future: API call yaha hoga
+    console.log("Login submitted");
+
+    // redirect after login
+    navigate("/");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const data = await loginUser(formData.email, formData.password);
-      const role = await login(data.token);
-      if (role === "ADMIN") {
-        navigate("/admin/dashboard");
-      } else if (role === "CLIENT") {
-        navigate("/client/dashboard");
-      } else {
-        setError("Could not determine your account role. Try again.");
-      }
-    } catch (err) {
-      const msg =
-        err?.response?.data?.message ||
-        err?.response?.data ||
-        "Invalid email or password.";
-      setError(typeof msg === "string" ? msg : "Login failed. Try again.");
-    } finally {
-      setLoading(false);
-    }
+  /* ================= TOGGLE PASSWORD ================= */
+  const togglePassword = () => {
+    setShowPassword(prev => !prev);
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-logo">⚡</div>
-        <h2 className="auth-title">Welcome Back</h2>
-        <p className="auth-subtitle">Sign in to your Devex account</p>
+    <div className="auth-wrapper">
 
-        {error && <div className="auth-error">{error}</div>}
+      <div className="auth-box">
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              className="input"
-              value={formData.email}
-              onChange={handleChange}
-              autoComplete="email"
-            />
+        {/* ================= LEFT SIDE ================= */}
+        <div className="auth-left">
+
+          <h1 className="auth-logo">DEVEX</h1>
+
+          <p className="auth-desc">
+            Build modern, scalable and powerful web applications with ease.
+            Join us and take your ideas to the next level with clean and
+            efficient digital solutions.
+          </p>
+
+        </div>
+
+        {/* ================= RIGHT SIDE ================= */}
+        <div className="auth-right">
+
+          <div className="auth-header">
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue to your account</p>
           </div>
 
-          <div className="input-group">
-            <label>Password</label>
-            <div className="password-box">
+          {/* ================= FORM ================= */}
+          <form onSubmit={handleSubmit} className="auth-form">
+
+            {/* EMAIL */}
+            <div className="input-box">
+              <input
+                type="email"
+                name="email"
+                required
+                autoComplete="off"
+              />
+              <label>Email Address</label>
+            </div>
+
+            {/* PASSWORD */}
+            <div className="input-box password-box">
+
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                placeholder="••••••••"
-                className="input"
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="current-password"
+                required
               />
+
+              <label>Password</label>
+
               <span
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password"
+                onClick={togglePassword}
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? "Hide" : "Show"}
               </span>
+
             </div>
+
+            {/* OPTIONS */}
+            <div className="auth-row">
+
+              <label className="remember-me">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+
+              <Link to="/forgot-password" className="forgot-link">
+                Forgot Password?
+              </Link>
+
+            </div>
+
+            {/* BUTTON */}
+            <button
+              type="submit"
+              className="login-btn"
+            >
+              Sign In
+            </button>
+
+          </form>
+
+          {/* FOOTER */}
+          <div className="auth-footer">
+            <p>
+              Don’t have an account?{" "}
+              <Link to="/register">Create Account</Link>
+            </p>
           </div>
 
-          <button
-            type="submit"
-            className="btn-primary btn-full"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="btn-loading">
-                <span className="spinner"></span> Signing in...
-              </span>
-            ) : (
-              "Sign In"
-            )}
-          </button>
-        </form>
+        </div>
 
-        <p className="auth-link">
-          Don't have an account?{" "}
-          <Link to="/register">Create one here</Link>
-        </p>
       </div>
+
     </div>
   );
 }

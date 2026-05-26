@@ -1,136 +1,131 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../../api/authApi";
-import "../../index.css";
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phone: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
+  /* ================= STATE ================= */
+  const [showPassword, setShowPassword] = useState(false);
+
+  /* ================= HANDLERS ================= */
+  const togglePassword = () => {
+    setShowPassword(prev => !prev);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { fullName, email, password, phone } = formData;
-    if (!fullName || !email || !password || !phone) {
-      setError("All fields are required.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
-    setLoading(true);
-    try {
-      await registerUser({ fullName, email, password, phone });
-      navigate("/login", { state: { registered: true } });
-    } catch (err) {
-      const msg =
-        err?.response?.data?.message ||
-        err?.response?.data ||
-        "Registration failed. Try again.";
-      setError(typeof msg === "string" ? msg : "Registration failed.");
-    } finally {
-      setLoading(false);
-    }
+
+    // 👉 future: API call yaha hoga
+    console.log("Register submitted");
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-logo">⚡</div>
-        <h2 className="auth-title">Create Account</h2>
-        <p className="auth-subtitle">Join Devex and start your journey</p>
+    <div className="auth-wrapper">
 
-        {error && <div className="auth-error">{error}</div>}
+      <div className="auth-box">
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="input-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              placeholder="John Doe"
-              className="input"
-              value={formData.fullName}
-              onChange={handleChange}
-            />
+        {/* ================= LEFT SIDE ================= */}
+        <div className="auth-left">
+
+          <h1 className="auth-logo">DEVEX</h1>
+
+          <p className="auth-desc">
+            Create your account and start building powerful digital products
+            with modern tools and technologies. Join us and take your ideas
+            to the next level.
+          </p>
+
+        </div>
+
+        {/* ================= RIGHT SIDE ================= */}
+        <div className="auth-right">
+
+          <div className="auth-header">
+            <h2>Create Account</h2>
+            <p>Sign up and start your journey with Devex</p>
           </div>
 
-          <div className="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              className="input"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+          {/* ================= FORM ================= */}
+          <form onSubmit={handleSubmit} className="auth-form">
 
-          <div className="input-group">
-            <label>Phone Number</label>
-            <input
-              type="tel"
-              name="phone"
-              placeholder="+91 9876543210"
-              className="input"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
+            {/* NAME */}
+            <div className="input-box">
+              <input
+                type="text"
+                name="name"
+                required
+                autoComplete="off"
+              />
+              <label>Full Name</label>
+            </div>
 
-          <div className="input-group">
-            <label>Password</label>
-            <div className="password-box">
+            {/* EMAIL */}
+            <div className="input-box">
+              <input
+                type="email"
+                name="email"
+                required
+                autoComplete="off"
+              />
+              <label>Email Address</label>
+            </div>
+
+            {/* PASSWORD */}
+            <div className="input-box password-box">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                placeholder="Min 6 characters"
-                className="input"
-                value={formData.password}
-                onChange={handleChange}
+                required
               />
+              <label>Password</label>
+
               <span
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password"
+                onClick={togglePassword}
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? "Hide" : "Show"}
               </span>
             </div>
+
+            {/* CONFIRM PASSWORD */}
+            <div className="input-box password-box">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="confirmPassword"
+                required
+              />
+              <label>Confirm Password</label>
+            </div>
+
+            {/* TERMS */}
+            <div className="auth-row">
+              <label className="terms-check">
+                <input type="checkbox" required />
+                <span>I agree to Terms & Conditions</span>
+              </label>
+            </div>
+
+            {/* BUTTON */}
+            <button
+              type="submit"
+              className="login-btn"
+            >
+              Create Account
+            </button>
+
+          </form>
+
+          {/* FOOTER */}
+          <div className="auth-footer">
+            <p>
+              Already have an account?{" "}
+              <Link to="/login">Login</Link>
+            </p>
           </div>
 
-          <button
-            type="submit"
-            className="btn-primary btn-full"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="btn-loading">
-                <span className="spinner"></span> Creating Account...
-              </span>
-            ) : (
-              "Create Account"
-            )}
-          </button>
-        </form>
+        </div>
 
-        <p className="auth-link">
-          Already have an account? <Link to="/login">Sign in</Link>
-        </p>
       </div>
+
     </div>
   );
 }
