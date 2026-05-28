@@ -118,8 +118,10 @@ export default function Homepage()
         <div className="hp-steps">
           {["Discover", "Design", "Build", "Launch"].map((s, i) => (
             <div key={s} className="hp-step">
-              <div className="hp-step-num">0{i + 1}</div>
-              <div className="hp-step-label">{s}</div>
+              <div>
+                <span className="hp-step-num">0{i + 1}</span>
+                <span className="hp-step-label">{s}</span>
+              </div>
               {i < 3 && <div className="hp-step-arrow">→</div>}
             </div>
           ))}

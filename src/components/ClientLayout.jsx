@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { logoutUser } from "../api/authApi";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { label: "Dashboard", path: "/client/dashboard", icon: "🏠" },
@@ -17,6 +18,12 @@ export default function ClientLayout({ children, title }) {
   const { toggle, isDark } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     try {
@@ -28,8 +35,17 @@ export default function ClientLayout({ children, title }) {
 
   return (
     <div className="layout">
+
+      {/* SIDEBAR OVERLAY (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-brand">
           <span className="sidebar-logo"></span>
           <span>DEVEX</span>
@@ -57,6 +73,18 @@ export default function ClientLayout({ children, title }) {
       {/* MAIN CONTENT */}
       <main className="layout-main">
         <header className="layout-header">
+
+          {/* Mobile hamburger */}
+          <button
+            className="sidebar-toggle-btn"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Toggle sidebar"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
           <h1 className="layout-title">{title}</h1>
           <div className="layout-header-right">
             <button className="theme-toggle" onClick={toggle} title="Toggle theme">

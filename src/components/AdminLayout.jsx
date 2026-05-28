@@ -29,11 +29,18 @@ export default function AdminLayout({ children, title }) {
 
   const location = useLocation();
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // 🔔 NOTIFICATION STATE
   const [counts, setCounts] = useState({
     pendingRequests: 0,
     openTickets: 0
   });
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   // FETCH COUNTS
   const fetchCounts = async () => {
@@ -84,8 +91,16 @@ export default function AdminLayout({ children, title }) {
   return (
     <div className="layout">
 
+      {/* SIDEBAR OVERLAY (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
 
         <div className="sidebar-brand">
           <span className="sidebar-logo"></span>
@@ -134,6 +149,17 @@ export default function AdminLayout({ children, title }) {
       <main className="layout-main">
 
         <header className="layout-header">
+
+          {/* Mobile hamburger */}
+          <button
+            className="sidebar-toggle-btn"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Toggle sidebar"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
           <h1 className="layout-title">
             {title}
