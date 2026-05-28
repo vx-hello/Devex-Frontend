@@ -2763,6 +2763,7 @@ body.light .hero::after { background: radial-gradient(circle, rgba(139,92,246,0.
   grid-template-columns: 1.6fr 1fr;
   gap: 24px;
   padding: 40px 7% 80px;
+  align-items: start;
 }
 
 /* FORM WRAP */
